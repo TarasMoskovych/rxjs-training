@@ -1,9 +1,4 @@
 import './styles.css';
+import { add } from './helpers';
 
-window.addEventListener('load', () => {
-  const header: HTMLElement = document.createElement('h1');
-  header.innerText = 'Webpack❤️TS';
-
-  const body = document.querySelector('body');
-  body.appendChild(header);
-});
+add.li('RxJs');
