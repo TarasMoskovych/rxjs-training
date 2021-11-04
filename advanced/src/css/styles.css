@@ -12,6 +12,10 @@
   grid-template-rows: 25% 100px auto;
 }
 
+.nav-wrapper {
+  transition: .5s;
+}
+
 .brand-logo {
   font-weight: 200;
 }

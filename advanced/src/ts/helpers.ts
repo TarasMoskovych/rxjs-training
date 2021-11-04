@@ -19,6 +19,8 @@ export const update = {
   line: updateLine,
 };
 
+export const getRandomBackground = () => `background-color: rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}) !important`;
+
 const clock = {
   seconds: 60,
   hours: 12,
@@ -208,7 +210,7 @@ function printLine(tick: number, type: string) {
   svg.appendChild(line);
 }
 
-function printLi(value: string) {
+function printLi(value: any) {
   const ul = document.getElementById('display-list');
   const item = document.createElement('li');
   item.innerHTML = value;
