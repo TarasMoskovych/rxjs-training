@@ -1,9 +1,11 @@
-import './styles.css';
+import './css/styles.css';
 
-import { Observable } from 'rxjs';
-import { add } from './helpers';
-import { CustomObservable } from './observable';
+import { Observable, of, from, fromEvent, interval, range } from 'rxjs';
+import { fromFetch } from 'rxjs/fetch';
+import { concatMap, delay, switchMap } from 'rxjs/operators';
+import { add, getRandomBackground, CustomObservable, User } from './ts';
 
+// Observable
 const promise = new Promise((resolve) => {
   setTimeout(() => {
     resolve('Promise');
@@ -38,3 +40,27 @@ customObservable$.subscribe(
   (err: string) => console.error(err),
   () => add.li('Completed'),
 );
+
+
+// creating Observables
+of(1, 2, 3).subscribe(add.li);
+
+from(['value_1', 'value_2', 'value_3']).subscribe(add.li);
+
+fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click').subscribe(getUser);
+
+function getUser() {
+  fromFetch('https://jsonplaceholder.typicode.com/users/1')
+    .pipe(switchMap((response: Response) => response.json()))
+    .subscribe((user: User) => add.li(JSON.stringify(user)));
+}
+
+interval(2000).subscribe(() => {
+  document
+    .querySelector('.nav-wrapper')
+    .setAttribute('style', getRandomBackground());
+});
+
+range(50, 11)
+  .pipe(concatMap((value: number) => of(value).pipe(delay(1000))))
+  .subscribe(add.li);
