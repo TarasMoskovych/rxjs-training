@@ -3,6 +3,8 @@ import { take, map, scan, takeWhile, switchMap } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
 import { User } from './models';
 
+const svgNamespace = 'http://www.w3.org/2000/svg';
+
 export const sampleData = ajax.getJSON('https://jsonplaceholder.typicode.com/users').pipe(
   switchMap((users: User[]) => of(...users)),
 );
@@ -46,28 +48,28 @@ clock.initial = clock.totalRadians * 0.75;
 export class Clock {
   constructor(parent: string) {
     const p = document.getElementById(parent);
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const svg = document.createElementNS(svgNamespace, 'svg');
 
     svg.setAttribute('width', String(clock.width));
     svg.setAttribute('height', String(clock.height));
     svg.setAttribute('style', 'background-color:#eee;margin:50px;border-radius:50%;box-shadow: 1px 2px 3px #bbb');
     svg.id = 'display-svg';
 
-    const bg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    const bg = document.createElementNS(svgNamespace, 'circle');
     const secondsLine = document.createElementNS(
-      'http://www.w3.org/2000/svg',
+      svgNamespace,
       'line'
     );
     const minutesLine = document.createElementNS(
-      'http://www.w3.org/2000/svg',
+      svgNamespace,
       'line'
     );
     const hoursLine = document.createElementNS(
-      'http://www.w3.org/2000/svg',
+      svgNamespace,
       'line'
     );
     const pin = document.createElementNS(
-      'http://www.w3.org/2000/svg',
+      svgNamespace,
       'circle'
     );
     bg.setAttribute('r', String(clock.radius));
@@ -199,7 +201,7 @@ function printLine(tick: number, type: string) {
 
   const svg = document.getElementById('display-svg');
 
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  const line = document.createElementNS(svgNamespace, 'line');
 
   line.setAttribute('stroke', c);
   line.setAttribute('stroke-width', sw);
