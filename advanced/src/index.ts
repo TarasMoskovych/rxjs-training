@@ -2,8 +2,16 @@ import './css/styles.css';
 
 import { Observable, of, from, fromEvent, interval, range } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { concatMap, delay, switchMap } from 'rxjs/operators';
-import { add, getRandomBackground, CustomObservable, User } from './ts';
+import { concatMap, delay, map, switchMap } from 'rxjs/operators';
+import {
+  add,
+  moveTime,
+  update,
+  getRandomBackground,
+  CustomObservable,
+  Clock,
+  User,
+} from './ts';
 
 // Observable
 const promise = new Promise((resolve) => {
@@ -64,3 +72,36 @@ interval(2000).subscribe(() => {
 range(50, 11)
   .pipe(concatMap((value: number) => of(value).pipe(delay(1000))))
   .subscribe(add.li);
+
+
+const clock = new Clock('chart');
+const secondHand = document.getElementById('seconds');
+const minuteHand = document.getElementById('minutes');
+const hourHand = document.getElementById('hours');
+
+range(1, 60).subscribe((tickMark: number) => add.line(tickMark, 'seconds'));
+range(1, 12).subscribe((tickMark: number) => add.line(tickMark, 'hours'));
+
+const timeTick$ = interval(1000).pipe(
+  map(() => {
+    const time = new Date();
+
+    return {
+      hours: time.getHours(),
+      minutes: time.getMinutes(),
+      seconds: time.getSeconds(),
+    };
+  }),
+);
+
+timeTick$.pipe(moveTime(60, 'minutes')).subscribe(angle => {
+  update.line(minuteHand, angle, 'minute');
+});
+
+timeTick$.pipe(moveTime(60, 'seconds')).subscribe(angle => {
+  update.line(secondHand, angle, 'second');
+});
+
+timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
+  update.line(hourHand, angle, 'hour');
+});
