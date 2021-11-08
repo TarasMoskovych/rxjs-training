@@ -12,6 +12,10 @@
   grid-template-rows: 25% 100px auto;
 }
 
+main {
+  display: flex;
+}
+
 .nav-wrapper {
   transition: .5s;
 }
@@ -22,6 +26,7 @@
 
 .display-container {
   perspective: 100px;
+  width: 100%;
 }
 
 .display-container #display-list li {
