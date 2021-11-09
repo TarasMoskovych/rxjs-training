@@ -2,7 +2,7 @@ import './css/styles.css';
 
 import { Observable, of, from, fromEvent, interval, range } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { concatMap, delay, map, switchMap } from 'rxjs/operators';
+import { concatMap, delay, filter, map, pluck, switchMap, take, tap } from 'rxjs/operators';
 import {
   add,
   moveTime,
@@ -11,6 +11,7 @@ import {
   CustomObservable,
   Clock,
   User,
+  sampleData$,
 } from './ts';
 
 // Observable
@@ -105,3 +106,22 @@ timeTick$.pipe(moveTime(60, 'seconds')).subscribe(angle => {
 timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
   update.line(hourHand, angle, 'hour');
 });
+
+// operators
+const numbers = ['zero', 'one', 'two', 'three', 'four'];
+
+interval(1000)
+  .pipe(
+    take(4),
+    filter((value: number) => value % 2 === 0),
+    map((value: number) => numbers[value]),
+  )
+  .subscribe(add.li);
+
+
+sampleData$
+  .pipe(
+    tap((user: User) => add.li(`>>> ${user.name}`)),
+    pluck('company', 'name')
+  )
+  .subscribe(add.li);

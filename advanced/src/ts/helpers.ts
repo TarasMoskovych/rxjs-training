@@ -5,7 +5,7 @@ import { User } from './models';
 
 const svgNamespace = 'http://www.w3.org/2000/svg';
 
-export const sampleData = ajax.getJSON('https://jsonplaceholder.typicode.com/users').pipe(
+export const sampleData$ = ajax.getJSON('https://jsonplaceholder.typicode.com/users').pipe(
   switchMap((users: User[]) => of(...users)),
 );
 
