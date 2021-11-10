@@ -2,7 +2,23 @@ import './css/styles.css';
 
 import { Observable, of, from, fromEvent, interval, range } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { concatMap, delay, filter, map, pluck, switchMap, take, tap } from 'rxjs/operators';
+import {
+  concatMap,
+  debounceTime,
+  delay,
+  filter,
+  first,
+  map,
+  pluck,
+  skip,
+  skipUntil,
+  skipWhile,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+  throttle,
+} from 'rxjs/operators';
 import {
   add,
   moveTime,
@@ -122,6 +138,53 @@ interval(1000)
 sampleData$
   .pipe(
     tap((user: User) => add.li(`>>> ${user.name}`)),
+    first(),
     pluck('company', 'name')
   )
   .subscribe(add.li);
+
+
+from(['apples', 'grapes', 'oranges', 'pears'])
+  .pipe(
+    skip(2),
+  )
+  .subscribe(add.li);
+
+
+interval(1000)
+  .pipe(
+    take(10),
+    skipWhile((value: number) => value < 4),
+  )
+  .subscribe(add.li);
+
+
+const buttonEvents$ = fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click');
+
+interval(1000)
+  .pipe(
+    skipUntil(buttonEvents$),
+  )
+  .subscribe(add.li);
+
+
+interval(1000)
+  .pipe(
+    takeUntil(buttonEvents$),
+  )
+  .subscribe(add.li);
+
+
+interval(10)
+  .pipe(
+    throttle(() => interval(1000)),
+    take(10),
+  )
+  .subscribe(add.li);
+
+
+fromEvent(document.querySelector('input'), 'keyup')
+  .pipe(
+    debounceTime(1000),
+  )
+  .subscribe((e: InputEvent) => document.querySelector('.brand-logo').textContent = (e.target as HTMLInputElement).value);
