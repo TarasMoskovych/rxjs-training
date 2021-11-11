@@ -1,6 +1,16 @@
 import './css/styles.css';
 
-import { Observable, of, from, fromEvent, interval, range } from 'rxjs';
+import {
+  Observable,
+  of,
+  from,
+  fromEvent,
+  interval,
+  range,
+  merge,
+  concat,
+  combineLatest,
+} from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import {
   concatMap,
@@ -10,6 +20,8 @@ import {
   first,
   map,
   pluck,
+  reduce,
+  scan,
   skip,
   skipUntil,
   skipWhile,
@@ -31,54 +43,54 @@ import {
 } from './ts';
 
 // Observable
-const promise = new Promise((resolve) => {
-  setTimeout(() => {
-    resolve('Promise');
-  }, 2000);
-});
+// const promise = new Promise((resolve) => {
+//   setTimeout(() => {
+//     resolve('Promise');
+//   }, 2000);
+// });
 
-const observable$ = new Observable((observer) => {
-  setTimeout(() => {
-    observer.next('Observable 1');
-    observer.complete();
-  }, 2000);
-});
+// const observable$ = new Observable((observer) => {
+//   setTimeout(() => {
+//     observer.next('Observable 1');
+//     observer.complete();
+//   }, 2000);
+// });
 
-const customObservable$ = new CustomObservable((observer) => {
-  setTimeout(() => {
-    observer.next('CustomObservable');
-    observer.complete();
-    observer.next('CustomObservable');
-  }, 2000);
-});
+// const customObservable$ = new CustomObservable((observer) => {
+//   setTimeout(() => {
+//     observer.next('CustomObservable');
+//     observer.complete();
+//     observer.next('CustomObservable');
+//   }, 2000);
+// });
 
-promise.then((message: string) => add.li(message));
+// promise.then((message: string) => add.li(message));
 
-observable$.subscribe({
-  next: (message: string) => add.li(message),
-  error: (err: string) => console.error(err),
-  complete: () => add.li('Completed'),
-});
+// observable$.subscribe({
+//   next: (message: string) => add.li(message),
+//   error: (err: string) => console.error(err),
+//   complete: () => add.li('Completed'),
+// });
 
-customObservable$.subscribe(
-  (message: string) => add.li(message),
-  (err: string) => console.error(err),
-  () => add.li('Completed'),
-);
+// customObservable$.subscribe(
+//   (message: string) => add.li(message),
+//   (err: string) => console.error(err),
+//   () => add.li('Completed'),
+// );
 
 
-// creating Observables
-of(1, 2, 3).subscribe(add.li);
+// // creating Observables
+// of(1, 2, 3).subscribe(add.li);
 
-from(['value_1', 'value_2', 'value_3']).subscribe(add.li);
+// from(['value_1', 'value_2', 'value_3']).subscribe(add.li);
 
-fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click').subscribe(getUser);
+// fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click').subscribe(getUser);
 
-function getUser() {
-  fromFetch('https://jsonplaceholder.typicode.com/users/1')
-    .pipe(switchMap((response: Response) => response.json()))
-    .subscribe((user: User) => add.li(JSON.stringify(user)));
-}
+// function getUser() {
+//   fromFetch('https://jsonplaceholder.typicode.com/users/1')
+//     .pipe(switchMap((response: Response) => response.json()))
+//     .subscribe((user: User) => add.li(JSON.stringify(user)));
+// }
 
 interval(2000).subscribe(() => {
   document
@@ -86,9 +98,9 @@ interval(2000).subscribe(() => {
     .setAttribute('style', getRandomBackground());
 });
 
-range(50, 11)
-  .pipe(concatMap((value: number) => of(value).pipe(delay(1000))))
-  .subscribe(add.li);
+// range(50, 11)
+//   .pipe(concatMap((value: number) => of(value).pipe(delay(1000))))
+//   .subscribe(add.li);
 
 
 const clock = new Clock('chart');
@@ -124,63 +136,63 @@ timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
 });
 
 // operators
-const numbers = ['zero', 'one', 'two', 'three', 'four'];
+// const numbers = ['zero', 'one', 'two', 'three', 'four'];
 
-interval(1000)
-  .pipe(
-    take(4),
-    filter((value: number) => value % 2 === 0),
-    map((value: number) => numbers[value]),
-  )
-  .subscribe(add.li);
-
-
-sampleData$
-  .pipe(
-    tap((user: User) => add.li(`>>> ${user.name}`)),
-    first(),
-    pluck('company', 'name')
-  )
-  .subscribe(add.li);
+// interval(1000)
+//   .pipe(
+//     take(4),
+//     filter((value: number) => value % 2 === 0),
+//     map((value: number) => numbers[value]),
+//   )
+//   .subscribe(add.li);
 
 
-from(['apples', 'grapes', 'oranges', 'pears'])
-  .pipe(
-    skip(2),
-  )
-  .subscribe(add.li);
+// sampleData$
+//   .pipe(
+//     tap((user: User) => add.li(`>>> ${user.name}`)),
+//     first(),
+//     pluck('company', 'name')
+//   )
+//   .subscribe(add.li);
 
 
-interval(1000)
-  .pipe(
-    take(10),
-    skipWhile((value: number) => value < 4),
-  )
-  .subscribe(add.li);
+// from(['apples', 'grapes', 'oranges', 'pears'])
+//   .pipe(
+//     skip(2),
+//   )
+//   .subscribe(add.li);
 
 
-const buttonEvents$ = fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click');
-
-interval(1000)
-  .pipe(
-    skipUntil(buttonEvents$),
-  )
-  .subscribe(add.li);
-
-
-interval(1000)
-  .pipe(
-    takeUntil(buttonEvents$),
-  )
-  .subscribe(add.li);
+// interval(1000)
+//   .pipe(
+//     take(10),
+//     skipWhile((value: number) => value < 4),
+//   )
+//   .subscribe(add.li);
 
 
-interval(10)
-  .pipe(
-    throttle(() => interval(1000)),
-    take(10),
-  )
-  .subscribe(add.li);
+// const buttonEvents$ = fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click');
+
+// interval(1000)
+//   .pipe(
+//     skipUntil(buttonEvents$),
+//   )
+//   .subscribe(add.li);
+
+
+// interval(1000)
+//   .pipe(
+//     takeUntil(buttonEvents$),
+//   )
+//   .subscribe(add.li);
+
+
+// interval(10)
+//   .pipe(
+//     throttle(() => interval(1000)),
+//     take(10),
+//   )
+//   .subscribe(add.li);
 
 
 fromEvent(document.querySelector('input'), 'keyup')
@@ -188,3 +200,26 @@ fromEvent(document.querySelector('input'), 'keyup')
     debounceTime(1000),
   )
   .subscribe((e: InputEvent) => document.querySelector('.brand-logo').textContent = (e.target as HTMLInputElement).value);
+
+
+interval(100)
+  .pipe(
+    take(10),
+    // scan((acc: number[], value: number) => {
+    //   const n = value + 1;
+    //   return [...acc, acc[n] + acc[n - 1]];
+    // }, [0, 1]),
+    reduce((acc: number[], value: number) => {
+      const n = value + 1;
+      return [...acc, acc[n] + acc[n - 1]];
+    }, [0, 1]),
+  )
+  .subscribe(console.log);
+
+
+const s1$ = interval(1000).pipe(take(10));
+const s2$ = fromEvent(document.querySelector('button'), 'click').pipe(map(() => 'clicked'));
+
+// merge(s1$, s2$).subscribe(add.li);
+// concat(s1$, s2$).subscribe(add.li);
+combineLatest([s1$, s2$]).subscribe(add.li);
