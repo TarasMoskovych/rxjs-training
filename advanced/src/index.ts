@@ -13,12 +13,15 @@ import {
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import {
+  concatAll,
   concatMap,
   debounceTime,
   delay,
+  exhaustMap,
   filter,
   first,
   map,
+  mergeAll,
   pluck,
   reduce,
   scan,
@@ -40,8 +43,10 @@ import {
   Clock,
   User,
   sampleData$,
+  animate,
 } from './ts';
 
+////////////////////////////////////
 // Observable
 // const promise = new Promise((resolve) => {
 //   setTimeout(() => {
@@ -79,6 +84,7 @@ import {
 // );
 
 
+////////////////////////////////////
 // // creating Observables
 // of(1, 2, 3).subscribe(add.li);
 
@@ -103,6 +109,7 @@ interval(2000).subscribe(() => {
 //   .subscribe(add.li);
 
 
+////////////////////////////////////
 const clock = new Clock('chart');
 const secondHand = document.getElementById('seconds');
 const minuteHand = document.getElementById('minutes');
@@ -135,6 +142,7 @@ timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
   update.line(hourHand, angle, 'hour');
 });
 
+////////////////////////////////////
 // operators
 // const numbers = ['zero', 'one', 'two', 'three', 'four'];
 
@@ -147,6 +155,7 @@ timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
 //   .subscribe(add.li);
 
 
+////////////////////////////////////
 // sampleData$
 //   .pipe(
 //     tap((user: User) => add.li(`>>> ${user.name}`)),
@@ -156,6 +165,7 @@ timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
 //   .subscribe(add.li);
 
 
+////////////////////////////////////
 // from(['apples', 'grapes', 'oranges', 'pears'])
 //   .pipe(
 //     skip(2),
@@ -163,6 +173,7 @@ timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
 //   .subscribe(add.li);
 
 
+////////////////////////////////////
 // interval(1000)
 //   .pipe(
 //     take(10),
@@ -171,6 +182,7 @@ timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
 //   .subscribe(add.li);
 
 
+////////////////////////////////////
 // const buttonEvents$ = fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click');
 
 // interval(1000)
@@ -187,6 +199,7 @@ timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
 //   .subscribe(add.li);
 
 
+////////////////////////////////////
 // interval(10)
 //   .pipe(
 //     throttle(() => interval(1000)),
@@ -195,6 +208,7 @@ timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
 //   .subscribe(add.li);
 
 
+////////////////////////////////////
 fromEvent(document.querySelector('input'), 'keyup')
   .pipe(
     debounceTime(1000),
@@ -202,6 +216,7 @@ fromEvent(document.querySelector('input'), 'keyup')
   .subscribe((e: InputEvent) => document.querySelector('.brand-logo').textContent = (e.target as HTMLInputElement).value);
 
 
+////////////////////////////////////
 interval(100)
   .pipe(
     take(10),
@@ -217,9 +232,62 @@ interval(100)
   .subscribe(console.log);
 
 
-const s1$ = interval(1000).pipe(take(10));
-const s2$ = fromEvent(document.querySelector('button'), 'click').pipe(map(() => 'clicked'));
+////////////////////////////////////
+// const s1$ = interval(1000).pipe(take(10));
+// const s2$ = fromEvent(document.querySelector('button'), 'click').pipe(map(() => 'clicked'));
 
 // merge(s1$, s2$).subscribe(add.li);
 // concat(s1$, s2$).subscribe(add.li);
-combineLatest([s1$, s2$]).subscribe(add.li);
+// combineLatest([s1$, s2$]).subscribe(add.li);
+
+
+////////////////////////////////////
+// const s1$ = fromEvent(document.querySelector('button'), 'click');
+// const source$ = s1$
+//   .pipe(
+//     tap(() => add.li('click')),
+//     map(() => interval(1000).pipe(take(3))),
+//   );
+
+// source$.pipe(
+//   // concatAll(),
+//   mergeAll(), // mergeAll(1) = concatAll(),
+// ).subscribe(add.li);
+
+
+////////////////////////////////////
+const canvas = document.querySelector('canvas');
+const context = canvas.getContext('2d');
+const brush = (coords: { x: number, y: number }): void => {
+  context.lineWidth = 5;
+  context.lineTo(coords.x, coords.y);
+  context.stroke();
+};
+
+const moves$ = fromEvent(canvas, 'mousemove');
+const down$ = fromEvent(canvas, 'mousedown');
+const up$ = fromEvent(canvas, 'mouseup');
+
+down$
+  .pipe(
+    tap((evt: MouseEvent) => {
+      context.strokeStyle = 'purple';
+      context.beginPath();
+      context.moveTo(evt.offsetX, evt.offsetY);
+    }),
+    switchMap(() => moves$.pipe(
+      map((evt: MouseEvent) => ({ x: evt.offsetX, y: evt.offsetY })),
+      takeUntil(up$),
+    )),
+  )
+  .subscribe(brush);
+
+
+////////////////////////////////////
+const circle = document.getElementById('circle');
+
+fromEvent(document.querySelector('button'), 'click')
+  .pipe(
+    exhaustMap(() => animate(2000)),
+  )
+  .subscribe((t: number) => circle.style.left = `calc(${t * 100}% - 50px)`);
