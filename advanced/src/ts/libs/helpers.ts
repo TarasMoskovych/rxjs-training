@@ -1,7 +1,7 @@
 import { interval, pipe, animationFrameScheduler, of } from 'rxjs';
 import { take, map, scan, takeWhile, switchMap } from 'rxjs/operators';
 import { ajax } from 'rxjs/ajax';
-import { User } from './models';
+import { User } from '../models';
 
 const svgNamespace = 'http://www.w3.org/2000/svg';
 

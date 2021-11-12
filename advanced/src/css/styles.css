@@ -13,7 +13,10 @@
 }
 
 main {
+  align-items: center;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .nav-wrapper {
@@ -58,6 +61,7 @@ main {
   background-color: rgb(0, 0, 100);
   border: solid 5px #999;
   border-radius: 50%;
+  position: relative;
 }
 
 div.bg-gradient {
