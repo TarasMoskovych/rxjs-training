@@ -44,6 +44,7 @@ import {
   User,
   sampleData$,
   animate,
+  usersUrl,
 } from './ts';
 
 ////////////////////////////////////
@@ -90,13 +91,14 @@ import {
 
 // from(['value_1', 'value_2', 'value_3']).subscribe(add.li);
 
-// fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click').subscribe(getUser);
+// from(fetch(api))
+fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click').subscribe(getUser);
 
-// function getUser() {
-//   fromFetch('https://jsonplaceholder.typicode.com/users/1')
-//     .pipe(switchMap((response: Response) => response.json()))
-//     .subscribe((user: User) => add.li(JSON.stringify(user)));
-// }
+function getUser() {
+  fromFetch(`${usersUrl}/1`)
+    .pipe(switchMap((response: Response) => response.json()))
+    .subscribe((user: User) => add.li(JSON.stringify(user)));
+}
 
 interval(2000).subscribe(() => {
   document
