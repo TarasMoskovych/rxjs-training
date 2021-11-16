@@ -12,6 +12,7 @@ import {
   combineLatest,
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
+import { ajax } from 'rxjs/ajax';
 import {
   concatAll,
   concatMap,
@@ -95,9 +96,10 @@ import {
 fromEvent(document.querySelector('button.waves-effect.waves-light.btn'), 'click').subscribe(getUser);
 
 function getUser() {
-  fromFetch(`${usersUrl}/1`)
-    .pipe(switchMap((response: Response) => response.json()))
+  ajax.getJSON(`${usersUrl}/1`)
     .subscribe((user: User) => add.li(JSON.stringify(user)));
+  // fromFetch(`${usersUrl}/1`)
+  //   .pipe(switchMap((response: Response) => response.json()));
 }
 
 interval(2000).subscribe(() => {
