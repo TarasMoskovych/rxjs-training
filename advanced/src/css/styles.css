@@ -1,3 +1,12 @@
+canvas {
+  border: 2px solid #999;
+  margin: 15px 50px;
+}
+
+.text-center {
+  text-align: center;
+}
+
 #display {
   color: #333;
   font-family: sans-serif;

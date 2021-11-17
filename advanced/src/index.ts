@@ -10,6 +10,7 @@ import {
   merge,
   concat,
   combineLatest,
+  Subject,
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { ajax } from 'rxjs/ajax';
@@ -46,7 +47,15 @@ import {
   sampleData$,
   animate,
   usersUrl,
+  initClock,
+  initDrawer,
+  initVisualizer,
 } from './ts';
+
+// components
+initClock();
+initDrawer();
+initVisualizer();
 
 ////////////////////////////////////
 // Observable
@@ -112,39 +121,6 @@ interval(2000).subscribe(() => {
 //   .pipe(concatMap((value: number) => of(value).pipe(delay(1000))))
 //   .subscribe(add.li);
 
-
-////////////////////////////////////
-const clock = new Clock('chart');
-const secondHand = document.getElementById('seconds');
-const minuteHand = document.getElementById('minutes');
-const hourHand = document.getElementById('hours');
-
-range(1, 60).subscribe((tickMark: number) => add.line(tickMark, 'seconds'));
-range(1, 12).subscribe((tickMark: number) => add.line(tickMark, 'hours'));
-
-const timeTick$ = interval(1000).pipe(
-  map(() => {
-    const time = new Date();
-
-    return {
-      hours: time.getHours(),
-      minutes: time.getMinutes(),
-      seconds: time.getSeconds(),
-    };
-  }),
-);
-
-timeTick$.pipe(moveTime(60, 'minutes')).subscribe(angle => {
-  update.line(minuteHand, angle, 'minute');
-});
-
-timeTick$.pipe(moveTime(60, 'seconds')).subscribe(angle => {
-  update.line(secondHand, angle, 'second');
-});
-
-timeTick$.pipe(moveTime(12, 'hours')).subscribe(angle => {
-  update.line(hourHand, angle, 'hour');
-});
 
 ////////////////////////////////////
 // operators
@@ -260,34 +236,6 @@ interval(100)
 
 
 ////////////////////////////////////
-const canvas = document.querySelector('canvas');
-const context = canvas.getContext('2d');
-const brush = (coords: { x: number, y: number }): void => {
-  context.lineWidth = 5;
-  context.lineTo(coords.x, coords.y);
-  context.stroke();
-};
-
-const moves$ = fromEvent(canvas, 'mousemove');
-const down$ = fromEvent(canvas, 'mousedown');
-const up$ = fromEvent(canvas, 'mouseup');
-
-down$
-  .pipe(
-    tap((evt: MouseEvent) => {
-      context.strokeStyle = 'purple';
-      context.beginPath();
-      context.moveTo(evt.offsetX, evt.offsetY);
-    }),
-    switchMap(() => moves$.pipe(
-      map((evt: MouseEvent) => ({ x: evt.offsetX, y: evt.offsetY })),
-      takeUntil(up$),
-    )),
-  )
-  .subscribe(brush);
-
-
-////////////////////////////////////
 const circle = document.getElementById('circle');
 
 fromEvent(document.querySelector('button'), 'click')
@@ -295,3 +243,18 @@ fromEvent(document.querySelector('button'), 'click')
     exhaustMap(() => animate(2000)),
   )
   .subscribe((t: number) => circle.style.left = `calc(${t * 100}% - 50px)`);
+
+
+////////////////////////////////////
+// cold (unicast)
+const obs$ = new Observable((observer) => observer.next(Date.now()));
+
+obs$.subscribe(add.li);
+obs$.subscribe(add.li);
+
+// hot (multicast)
+const sub = new Subject();
+
+sub.subscribe((val: number) => add.li('S: ' + val));
+sub.subscribe((val: number) => add.li('S: ' + val));
+sub.next(Date.now());
