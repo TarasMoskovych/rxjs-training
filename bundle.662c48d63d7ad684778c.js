@@ -1865,72 +1865,6 @@ var AjaxTimeoutError = AjaxTimeoutErrorImpl;
 var ajax = /*@__PURE__*/ (function () { return AjaxObservable.create; })();
 //# sourceMappingURL=ajax.js.map
 
-;// CONCATENATED MODULE: ./node_modules/rxjs/_esm5/internal/operators/debounceTime.js
-/** PURE_IMPORTS_START tslib,_Subscriber,_scheduler_async PURE_IMPORTS_END */
-
-
-
-function debounceTime(dueTime, scheduler) {
-    if (scheduler === void 0) {
-        scheduler = async_async;
-    }
-    return function (source) { return source.lift(new DebounceTimeOperator(dueTime, scheduler)); };
-}
-var DebounceTimeOperator = /*@__PURE__*/ (function () {
-    function DebounceTimeOperator(dueTime, scheduler) {
-        this.dueTime = dueTime;
-        this.scheduler = scheduler;
-    }
-    DebounceTimeOperator.prototype.call = function (subscriber, source) {
-        return source.subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
-    };
-    return DebounceTimeOperator;
-}());
-var DebounceTimeSubscriber = /*@__PURE__*/ (function (_super) {
-    __extends(DebounceTimeSubscriber, _super);
-    function DebounceTimeSubscriber(destination, dueTime, scheduler) {
-        var _this = _super.call(this, destination) || this;
-        _this.dueTime = dueTime;
-        _this.scheduler = scheduler;
-        _this.debouncedSubscription = null;
-        _this.lastValue = null;
-        _this.hasValue = false;
-        return _this;
-    }
-    DebounceTimeSubscriber.prototype._next = function (value) {
-        this.clearDebounce();
-        this.lastValue = value;
-        this.hasValue = true;
-        this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
-    };
-    DebounceTimeSubscriber.prototype._complete = function () {
-        this.debouncedNext();
-        this.destination.complete();
-    };
-    DebounceTimeSubscriber.prototype.debouncedNext = function () {
-        this.clearDebounce();
-        if (this.hasValue) {
-            var lastValue = this.lastValue;
-            this.lastValue = null;
-            this.hasValue = false;
-            this.destination.next(lastValue);
-        }
-    };
-    DebounceTimeSubscriber.prototype.clearDebounce = function () {
-        var debouncedSubscription = this.debouncedSubscription;
-        if (debouncedSubscription !== null) {
-            this.remove(debouncedSubscription);
-            debouncedSubscription.unsubscribe();
-            this.debouncedSubscription = null;
-        }
-    };
-    return DebounceTimeSubscriber;
-}(Subscriber));
-function dispatchNext(subscriber) {
-    subscriber.debouncedNext();
-}
-//# sourceMappingURL=debounceTime.js.map
-
 ;// CONCATENATED MODULE: ./node_modules/rxjs/_esm5/internal/util/ArgumentOutOfRangeError.js
 /** PURE_IMPORTS_START  PURE_IMPORTS_END */
 var ArgumentOutOfRangeErrorImpl = /*@__PURE__*/ (function () {
@@ -2008,6 +1942,72 @@ var TakeSubscriber = /*@__PURE__*/ (function (_super) {
     return TakeSubscriber;
 }(Subscriber));
 //# sourceMappingURL=take.js.map
+
+;// CONCATENATED MODULE: ./node_modules/rxjs/_esm5/internal/operators/debounceTime.js
+/** PURE_IMPORTS_START tslib,_Subscriber,_scheduler_async PURE_IMPORTS_END */
+
+
+
+function debounceTime(dueTime, scheduler) {
+    if (scheduler === void 0) {
+        scheduler = async_async;
+    }
+    return function (source) { return source.lift(new DebounceTimeOperator(dueTime, scheduler)); };
+}
+var DebounceTimeOperator = /*@__PURE__*/ (function () {
+    function DebounceTimeOperator(dueTime, scheduler) {
+        this.dueTime = dueTime;
+        this.scheduler = scheduler;
+    }
+    DebounceTimeOperator.prototype.call = function (subscriber, source) {
+        return source.subscribe(new DebounceTimeSubscriber(subscriber, this.dueTime, this.scheduler));
+    };
+    return DebounceTimeOperator;
+}());
+var DebounceTimeSubscriber = /*@__PURE__*/ (function (_super) {
+    __extends(DebounceTimeSubscriber, _super);
+    function DebounceTimeSubscriber(destination, dueTime, scheduler) {
+        var _this = _super.call(this, destination) || this;
+        _this.dueTime = dueTime;
+        _this.scheduler = scheduler;
+        _this.debouncedSubscription = null;
+        _this.lastValue = null;
+        _this.hasValue = false;
+        return _this;
+    }
+    DebounceTimeSubscriber.prototype._next = function (value) {
+        this.clearDebounce();
+        this.lastValue = value;
+        this.hasValue = true;
+        this.add(this.debouncedSubscription = this.scheduler.schedule(dispatchNext, this.dueTime, this));
+    };
+    DebounceTimeSubscriber.prototype._complete = function () {
+        this.debouncedNext();
+        this.destination.complete();
+    };
+    DebounceTimeSubscriber.prototype.debouncedNext = function () {
+        this.clearDebounce();
+        if (this.hasValue) {
+            var lastValue = this.lastValue;
+            this.lastValue = null;
+            this.hasValue = false;
+            this.destination.next(lastValue);
+        }
+    };
+    DebounceTimeSubscriber.prototype.clearDebounce = function () {
+        var debouncedSubscription = this.debouncedSubscription;
+        if (debouncedSubscription !== null) {
+            this.remove(debouncedSubscription);
+            debouncedSubscription.unsubscribe();
+            this.debouncedSubscription = null;
+        }
+    };
+    return DebounceTimeSubscriber;
+}(Subscriber));
+function dispatchNext(subscriber) {
+    subscriber.debouncedNext();
+}
+//# sourceMappingURL=debounceTime.js.map
 
 ;// CONCATENATED MODULE: ./node_modules/rxjs/_esm5/internal/operators/scan.js
 /** PURE_IMPORTS_START tslib,_Subscriber PURE_IMPORTS_END */
@@ -8924,7 +8924,9 @@ var __spreadArray = (undefined && undefined.__spreadArray) || function (to, from
 // components
 initClock();
 initDrawer();
-initVisualizer();
+fromEvent(document.querySelector('audio'), 'play')
+    .pipe(take_take(1))
+    .subscribe(initVisualizer);
 ////////////////////////////////////
 // Observable
 // const promise = new Promise((resolve) => {
