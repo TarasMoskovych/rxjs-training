@@ -2,7 +2,7 @@
   "name": "rxjs-training",
   "version": "1.0.0",
   "scripts": {
-    "build:rxjs-advanced": "npm run build --prefix advanced"
+    "build:rxjs-advanced": "npm run build --prefix ./advanced"
   },
   "repository": {
     "type": "git",
