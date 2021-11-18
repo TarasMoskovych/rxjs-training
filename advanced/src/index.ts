@@ -55,7 +55,9 @@ import {
 // components
 initClock();
 initDrawer();
-initVisualizer();
+fromEvent(document.querySelector('audio'), 'play')
+  .pipe(take(1))
+  .subscribe(initVisualizer);
 
 ////////////////////////////////////
 // Observable
