@@ -1,0 +1,16 @@
+{
+  "name": "rxjs-training",
+  "version": "1.0.0",
+  "scripts": {
+    "build:rxjs-advanced": "npm run build --prefix advanced"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TarasMoskovych/rxjs-training.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TarasMoskovych/rxjs-training/issues"
+  },
+  "homepage": "https://github.com/TarasMoskovych/rxjs-training#readme"
+}
