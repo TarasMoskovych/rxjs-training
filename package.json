@@ -2,6 +2,8 @@
   "name": "rxjs-training",
   "version": "1.0.0",
   "scripts": {
+    "start:rxjs-advanced": "npm start --prefix ./advanced",
+    "start:courses-app": "npm start --prefix ./courses-app",
     "build:rxjs-advanced": "npm run build --prefix ./advanced"
   },
   "repository": {
