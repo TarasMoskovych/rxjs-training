@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { map, Observable } from 'rxjs';
 
 import { Course } from '../shared/models';
@@ -32,15 +32,13 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  editCourse(course: Course): void {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '400px';
-    dialogConfig.data = course;
-
-    const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
+  onEditCourse(course: Course): void {
+    this.dialog.open(CourseDialogComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: '400px',
+      data: course,
+    });
   }
 
   private filterCourses(courses: Course[], category: 'BEGINNER' | 'ADVANCED'): Course[] {
