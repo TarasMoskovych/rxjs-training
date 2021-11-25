@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatMenuModule } from '@angular/material/menu';
@@ -21,16 +22,17 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { SafeUrlPipe } from './pipes';
+import { CoursesCardListComponent } from './components';
 
 @NgModule({
   declarations: [
-    SafeUrlPipe
+    CoursesCardListComponent,
+    SafeUrlPipe,
   ],
   imports: [
     CommonModule,
-  ],
-  exports: [
     ReactiveFormsModule,
+    RouterModule,
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
@@ -49,6 +51,29 @@ import { SafeUrlPipe } from './pipes';
     MatToolbarModule,
     MatDatepickerModule,
     MatMomentDateModule,
+  ],
+  exports: [
+    ReactiveFormsModule,
+    RouterModule,
+    MatMenuModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatInputModule,
+    MatListModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSortModule,
+    MatTableModule,
+    MatToolbarModule,
+    MatDatepickerModule,
+    MatMomentDateModule,
+    CoursesCardListComponent,
     SafeUrlPipe,
   ]
 })
