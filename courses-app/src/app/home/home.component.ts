@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { map, Observable } from 'rxjs';
 
 import { Course } from '../shared/models';
-import { CourseDialogComponent } from '../course-dialog/course-dialog.component';
 import { CoursesService } from '../core/services';
 
 @Component({
@@ -17,10 +15,13 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private coursesService: CoursesService,
-    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
+    this.loadCourses();
+  }
+
+  loadCourses(): void {
     const courses$ = this.coursesService.getAll();
 
     this.beginnerCourses$ = courses$.pipe(
@@ -30,15 +31,6 @@ export class HomeComponent implements OnInit {
     this.advancedCourses$ = courses$.pipe(
       map((courses: Course[]) => this.filterCourses(courses, 'ADVANCED')),
     );
-  }
-
-  onEditCourse(course: Course): void {
-    this.dialog.open(CourseDialogComponent, {
-      disableClose: true,
-      autoFocus: true,
-      width: '400px',
-      data: course,
-    });
   }
 
   private filterCourses(courses: Course[], category: 'BEGINNER' | 'ADVANCED'): Course[] {

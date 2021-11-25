@@ -1,4 +1,8 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { filter } from 'rxjs';
+
+import { CourseDialogComponent } from 'src/app/course-dialog/course-dialog.component';
 import { Course } from '../../models';
 
 @Component({
@@ -9,9 +13,19 @@ import { Course } from '../../models';
 })
 export class CoursesCardListComponent {
   @Input() courses: Course[] = [];
-  @Output() editCourse = new EventEmitter<Course>();
+  @Output() coursesChanged = new EventEmitter<void>();
+
+  constructor(private dialog: MatDialog) { }
 
   onEditCourse(course: Course): void {
-    this.editCourse.emit(course);
+    this.dialog.open(CourseDialogComponent, {
+      disableClose: true,
+      autoFocus: true,
+      width: '400px',
+      data: course,
+    })
+    .afterClosed()
+    .pipe(filter((changes: Course) => !!changes))
+    .subscribe(() => this.coursesChanged.emit());
   }
 }
