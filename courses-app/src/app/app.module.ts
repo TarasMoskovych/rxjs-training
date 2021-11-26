@@ -13,7 +13,6 @@ import { CourseDialogComponent } from './course-dialog/course-dialog.component';
 import { CourseComponent } from './course/course.component';
 import { HomeComponent } from './home/home.component';
 import { LessonComponent } from './lesson/lesson.component';
-import { LoadingComponent } from './loading/loading.component';
 import { LoginComponent } from './login/login.component';
 import { MessagesComponent } from './messages/messages.component';
 import { SearchLessonsComponent } from './search-lessons/search-lessons.component';
@@ -26,7 +25,6 @@ import { SearchLessonsComponent } from './search-lessons/search-lessons.componen
     CourseComponent,
     HomeComponent,
     LessonComponent,
-    LoadingComponent,
     LoginComponent,
     MessagesComponent,
     SearchLessonsComponent

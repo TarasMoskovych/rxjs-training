@@ -22,11 +22,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { SafeUrlPipe } from './pipes';
-import { CoursesCardListComponent } from './components';
+import {
+  CoursesCardListComponent,
+  LoadingComponent,
+} from './components';
 
 @NgModule({
   declarations: [
     CoursesCardListComponent,
+    LoadingComponent,
     SafeUrlPipe,
   ],
   imports: [
@@ -74,6 +78,7 @@ import { CoursesCardListComponent } from './components';
     MatDatepickerModule,
     MatMomentDateModule,
     CoursesCardListComponent,
+    LoadingComponent,
     SafeUrlPipe,
   ]
 })
