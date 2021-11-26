@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 import { Course } from '../shared/models';
-import { CoursesService } from '../core/services';
+import { CoursesService, LoadingService } from '../core/services';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private coursesService: CoursesService,
+    private loadingService: LoadingService,
   ) { }
 
   ngOnInit(): void {
