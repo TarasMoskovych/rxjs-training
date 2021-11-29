@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadCourses(): void {
-    const courses$ = this.coursesService.getAll();
+    const courses$ = this.loadingService.showLoaderUntilCompleted(this.coursesService.getAll());
 
     this.beginnerCourses$ = courses$.pipe(
       map((courses: Course[]) => this.filterCourses(courses, 'BEGINNER')),
