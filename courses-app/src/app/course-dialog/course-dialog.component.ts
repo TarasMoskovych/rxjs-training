@@ -9,7 +9,8 @@ import { Course } from '../shared/models';
 @Component({
   selector: 'app-course-dialog',
   templateUrl: './course-dialog.component.html',
-  styleUrls: ['./course-dialog.component.scss']
+  styleUrls: ['./course-dialog.component.scss'],
+  providers: [LoadingService],
 })
 export class CourseDialogComponent implements AfterViewInit {
   form: FormGroup;
@@ -37,7 +38,7 @@ export class CourseDialogComponent implements AfterViewInit {
   }
 
   save(): void {
-    this.coursesService.update(this.course.id, this.form.value)
+    this.loadingService.showLoaderUntilCompleted(this.coursesService.update(this.course.id, this.form.value))
       .subscribe((course: Course) => this.close(course));
   }
 
