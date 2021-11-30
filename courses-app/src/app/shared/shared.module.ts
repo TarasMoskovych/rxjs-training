@@ -25,12 +25,14 @@ import { SafeUrlPipe } from './pipes';
 import {
   CoursesCardListComponent,
   LoadingComponent,
+  MessagesComponent,
 } from './components';
 
 @NgModule({
   declarations: [
     CoursesCardListComponent,
     LoadingComponent,
+    MessagesComponent,
     SafeUrlPipe,
   ],
   imports: [
@@ -79,6 +81,7 @@ import {
     MatMomentDateModule,
     CoursesCardListComponent,
     LoadingComponent,
+    MessagesComponent,
     SafeUrlPipe,
   ]
 })

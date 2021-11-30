@@ -14,7 +14,6 @@ import { CourseComponent } from './course/course.component';
 import { HomeComponent } from './home/home.component';
 import { LessonComponent } from './lesson/lesson.component';
 import { LoginComponent } from './login/login.component';
-import { MessagesComponent } from './messages/messages.component';
 import { SearchLessonsComponent } from './search-lessons/search-lessons.component';
 
 @NgModule({
@@ -26,7 +25,6 @@ import { SearchLessonsComponent } from './search-lessons/search-lessons.componen
     HomeComponent,
     LessonComponent,
     LoginComponent,
-    MessagesComponent,
     SearchLessonsComponent
   ],
   imports: [

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"ng serve --port 4201 --proxy-config ./proxy.json\" \"ts-node -P ./server/server.tsconfig.json ./server/server.ts\"",
+    "start": "concurrently \"ng serve --port 4201 --proxy-config ./proxy.json\" \"nodemon\"",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -41,6 +41,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "typescript": "~4.4.3"
   }

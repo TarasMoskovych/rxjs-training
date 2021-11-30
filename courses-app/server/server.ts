@@ -11,6 +11,7 @@ import {
 
 const bodyParser = require('body-parser');
 const app: Application = express();
+const port = 3001;
 
 app.use(bodyParser.json());
 
@@ -20,6 +21,6 @@ app.route('/api/lessons').get(searchLessons);
 app.route('/api/courses/:id').put(saveCourse);
 app.route('/api/login').post(loginUser);
 
-const httpServer = app.listen(3001, () => {
-  console.log('HTTP REST API Server running at http://localhost:' + httpServer.address()['port']);
+app.listen(port, () => {
+  console.log('HTTP REST API Server running at http://localhost:' + port);
 });
