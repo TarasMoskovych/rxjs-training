@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { COURSES } from './../db-data';
 
 export function getAllCourses(req: Request, res: Response) {
+  // return res.status(500).json({ message: 'error occured' });
+
   setTimeout(() => {
     res.status(200).json({ payload: Object.values(COURSES) });
   }, 1500);

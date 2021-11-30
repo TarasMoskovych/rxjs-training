@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 import { Course } from '../shared/models';
-import { CoursesService, LoadingService } from '../core/services';
+import { CoursesService, LoadingService, MessagesService } from '../core/services';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private coursesService: CoursesService,
     private loadingService: LoadingService,
+    private messagesService: MessagesService,
   ) { }
 
   ngOnInit(): void {
@@ -23,7 +25,14 @@ export class HomeComponent implements OnInit {
   }
 
   loadCourses(): void {
-    const courses$ = this.loadingService.showLoaderUntilCompleted(this.coursesService.getAll());
+    const courses$ = this.loadingService.showLoaderUntilCompleted(
+      this.coursesService.getAll().pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.messagesService.showErrors(err, 'Could not load courses');
+          return throwError(() => err);
+        }),
+      ),
+    );
 
     this.beginnerCourses$ = courses$.pipe(
       map((courses: Course[]) => this.filterCourses(courses, 'BEGINNER')),

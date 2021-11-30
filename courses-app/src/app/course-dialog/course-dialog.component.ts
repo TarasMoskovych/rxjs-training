@@ -1,16 +1,18 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
+import { catchError, throwError } from 'rxjs';
 
-import { CoursesService, LoadingService } from '../core';
+import { CoursesService, LoadingService, MessagesService } from '../core';
 import { Course } from '../shared/models';
 
 @Component({
   selector: 'app-course-dialog',
   templateUrl: './course-dialog.component.html',
   styleUrls: ['./course-dialog.component.scss'],
-  providers: [LoadingService],
+  providers: [LoadingService, MessagesService],
 })
 export class CourseDialogComponent implements AfterViewInit {
   form: FormGroup;
@@ -21,6 +23,7 @@ export class CourseDialogComponent implements AfterViewInit {
     private dialogRef: MatDialogRef<CourseDialogComponent>,
     private coursesService: CoursesService,
     private loadingService: LoadingService,
+    private messagesService: MessagesService,
     @Inject(MAT_DIALOG_DATA) course: Course) {
 
     this.course = course;
@@ -39,6 +42,12 @@ export class CourseDialogComponent implements AfterViewInit {
 
   save(): void {
     this.loadingService.showLoaderUntilCompleted(this.coursesService.update(this.course.id, this.form.value))
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.messagesService.showErrors(err, `Could not save ${this.course.description}`);
+          return throwError(() => err);
+        }),
+      )
       .subscribe((course: Course) => this.close(course));
   }
 
