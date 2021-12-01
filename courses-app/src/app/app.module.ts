@@ -15,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { LessonComponent } from './lesson/lesson.component';
 import { LoginComponent } from './login/login.component';
 import { SearchLessonsComponent } from './search-lessons/search-lessons.component';
+import { LoadingService, MessagesService } from './core';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,10 @@ import { SearchLessonsComponent } from './search-lessons/search-lessons.componen
     SharedModule,
     AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+    LoadingService,
+    MessagesService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
