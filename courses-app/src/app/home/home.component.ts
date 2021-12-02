@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
   constructor(
-    private store: CoursesStoreService,
+    private coursesStore: CoursesStoreService,
   ) { }
 
   ngOnInit(): void {
@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadCourses(): void {
-    this.beginnerCourses$ = this.store.filterByCategory('BEGINNER');
-    this.advancedCourses$ = this.store.filterByCategory('ADVANCED');
+    this.beginnerCourses$ = this.coursesStore.filterByCategory('BEGINNER');
+    this.advancedCourses$ = this.coursesStore.filterByCategory('ADVANCED');
   }
 }
