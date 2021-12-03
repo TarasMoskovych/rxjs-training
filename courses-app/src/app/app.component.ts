@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthStoreService } from './core';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  logout(): void {
+  constructor(public authService: AuthStoreService) {}
 
+  logout(): void {
+    this.authService.logout();
   }
 }

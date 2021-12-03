@@ -10,7 +10,7 @@
     <button mat-button class="mat-raised-button mat-primary" [routerLink]="['/courses', course.id]">
       VIEW COURSE
     </button>
-    <button mat-button class="mat-raised-button mat-accent" (click)="onEditCourse(course)">
+    <button *ngIf="edit" mat-button class="mat-raised-button mat-accent" (click)="onEditCourse(course)">
       EDIT
     </button>
   </mat-card-actions>

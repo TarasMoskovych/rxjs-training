@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Course } from '../shared/models';
-import { CoursesStoreService } from '../core/services';
+import { AuthStoreService, CoursesStoreService } from '../core/services';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
   constructor(
+    public authService: AuthStoreService,
     private coursesStore: CoursesStoreService,
   ) { }
 

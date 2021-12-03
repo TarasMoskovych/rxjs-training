@@ -13,6 +13,7 @@ import { Course } from '../../models';
 })
 export class CoursesCardListComponent {
   @Input() courses: Course[] = [];
+  @Input() edit = false;
   @Output() coursesChanged = new EventEmitter<void>();
 
   constructor(private dialog: MatDialog) { }
