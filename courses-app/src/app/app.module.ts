@@ -39,6 +39,10 @@ import { LoadingService, MessagesService } from './core';
   providers: [
     LoadingService,
     MessagesService,
+    {
+      provide: Storage,
+      useValue: window.localStorage,
+    },
   ],
   bootstrap: [AppComponent]
 })
