@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Lesson } from '../shared/models';
 
 @Component({
   selector: 'app-lesson',
   templateUrl: './lesson.component.html',
-  styleUrls: ['./lesson.component.scss']
+  styleUrls: ['./lesson.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LessonComponent implements OnInit {
+export class LessonComponent {
+  @Input() lesson: Lesson;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  get videoSrc(): string {
+    return `https://www.youtube.com/embed/${this.lesson.videoId}`;
   }
-
 }
