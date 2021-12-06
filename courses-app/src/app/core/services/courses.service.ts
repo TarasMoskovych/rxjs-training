@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, pluck, shareReplay } from 'rxjs';
 
-import { Course, sortCoursesBySeqNo } from 'src/app/shared/models';
+import { Course, Lesson, sortCoursesBySeqNo } from 'src/app/shared/models';
 import { CoreModule } from '../core.module';
 
 @Injectable({
@@ -22,5 +22,17 @@ export class CoursesService {
 
   update(id: string, changes: Partial<Course>): Observable<Course> {
     return this.http.put<Course>(`/api/courses/${id}`, changes);
+  }
+
+  searchLessons(search: string): Observable<Lesson[]> {
+    return this.http.get<{ payload: Lesson[] }>(`/api/lessons`, {
+      params: {
+        filter: search,
+        pageSize: 100,
+      },
+    }).pipe(
+      pluck('payload'),
+      shareReplay(),
+    );
   }
 }

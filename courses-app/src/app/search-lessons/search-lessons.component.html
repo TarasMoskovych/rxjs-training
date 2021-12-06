@@ -4,21 +4,32 @@
     <input matInput placeholder="Type your search" #searchInput autocomplete="off">
   </mat-form-field>
 
-  <button class="search" mat-raised-button color="primary">
+  <button class="search" mat-raised-button color="primary" (click)="onSearch(searchInput.value)">
     <mat-icon>search</mat-icon>
     Search
   </button>
 
-  <table class="lessons-table mat-elevation-z7">
-    <thead>
-      <th>#</th>
-      <th>Description</th>
-      <th>Duration</th>
-    </thead>
-    <!-- tr class="lesson-row">
+  <ng-container *ngIf="!selectedLesson; else detailView">
+    <table *ngIf="searchResults$ | async as lessons" class="lessons-table mat-elevation-z7">
+      <thead>
+        <th>#</th>
+        <th>Description</th>
+        <th>Duration</th>
+      </thead>
+      <tr *ngFor="let lesson of lessons" class="lesson-row" (click)="onSelectLesson(lesson)">
         <td class="seqno-cell">{{lesson.seqNo}}</td>
         <td class="description-cell">{{lesson.description}}</td>
         <td class="duration-cell">{{lesson.duration}}</td>
-      </tr -->
-  </table>
+      </tr>
+    </table>
+  </ng-container>
+
+  <ng-template #detailView>
+    <button mat-raised-button class="back-button" (click)="selectedLesson = null">
+      <mat-icon>arrow_back_ios</mat-icon>
+      Back to search
+    </button>
+    <app-lesson [lesson]="selectedLesson"></app-lesson>
+  </ng-template>
+
 </div>
