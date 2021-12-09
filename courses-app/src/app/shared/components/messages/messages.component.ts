@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { MessagesService } from '@app/core';
+import { fade } from '@app/shared/animations';
 import { Observable, tap } from 'rxjs';
-import { MessagesService } from 'src/app/core';
-import { fade } from '../../animations';
 
 @Component({
   selector: 'app-messages',

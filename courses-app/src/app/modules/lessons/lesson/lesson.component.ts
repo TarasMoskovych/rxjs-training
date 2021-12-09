@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Lesson } from '../shared/models';
+import { Lesson } from '@app/shared/models';
 
 @Component({
   selector: 'app-lesson',

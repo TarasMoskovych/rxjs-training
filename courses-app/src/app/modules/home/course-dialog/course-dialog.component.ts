@@ -1,17 +1,18 @@
-import { AfterViewInit, Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import * as moment from 'moment';
 
-import { CoursesStoreService } from '../core';
-import { Course } from '../shared/models';
+import { Course } from '@app/shared/models';
+import { CoursesStoreService } from '@app/core';
 
 @Component({
   selector: 'app-course-dialog',
   templateUrl: './course-dialog.component.html',
   styleUrls: ['./course-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CourseDialogComponent implements AfterViewInit {
+export class CourseDialogComponent {
   form: FormGroup;
   course: Course;
 
@@ -29,10 +30,6 @@ export class CourseDialogComponent implements AfterViewInit {
       releasedAt: [moment(), Validators.required],
       longDescription: [course.longDescription, Validators.required]
     });
-  }
-
-  ngAfterViewInit() {
-
   }
 
   save(): void {

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LoadingService } from 'src/app/core';
-import { fade } from '../../animations';
+import { LoadingService } from '@app/core';
+import { fade } from '@app/shared/animations';
 
 @Component({
   selector: 'app-loading',

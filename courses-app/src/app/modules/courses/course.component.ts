@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, map, Observable, startWith } from 'rxjs';
-import { CoursesService } from '../core';
-import { Course, Lesson } from '../shared/models';
+
+import { CoursesService } from '@app/core';
+import { Course, Lesson } from '@app/shared/models';
 
 interface CourseData {
   course: Course;
