@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
 
-import { CourseDialogComponent } from 'src/app/course-dialog/course-dialog.component';
-import { Course } from '../../models';
+import { Course } from '@app/shared/models';
+import { CourseDialogComponent } from '@app/modules/home/course-dialog/course-dialog.component';
 
 @Component({
   selector: 'app-courses-card-list',

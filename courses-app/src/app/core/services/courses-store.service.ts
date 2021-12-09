@@ -2,9 +2,9 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, map, Observable, pluck, shareReplay, tap, throwError } from 'rxjs';
 
-import { Course, sortCoursesBySeqNo } from 'src/app/shared/models';
+import { CoreModule } from '@app/core/core.module';
+import { Course, sortCoursesBySeqNo } from '@app/shared/models';
 import { LoadingService, MessagesService } from '.';
-import { CoreModule } from '../core.module';
 
 @Injectable({
   providedIn: CoreModule,

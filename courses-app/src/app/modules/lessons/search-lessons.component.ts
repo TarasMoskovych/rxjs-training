@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { CoursesService } from '@app/core';
+import { Lesson } from '@app/shared/models';
 import { Observable } from 'rxjs';
-import { CoursesService } from '../core';
-import { Lesson } from '../shared/models';
 
 @Component({
   selector: 'app-search-lessons',

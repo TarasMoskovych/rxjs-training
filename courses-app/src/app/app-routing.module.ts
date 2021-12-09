@@ -1,32 +1,41 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AboutComponent } from './about/about.component';
-import { CourseComponent } from './course/course.component';
-
-import { HomeComponent } from './home/home.component';
-import { LoginComponent } from './login/login.component';
-import { SearchLessonsComponent } from './search-lessons/search-lessons.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    loadChildren: () =>
+    import('@app/modules/home/home.module').then(
+      (t) => t.HomeModule,
+    ),
   },
   {
     path: 'search-lessons',
-    component: SearchLessonsComponent
+    loadChildren: () =>
+    import('@app/modules/lessons/lessons.module').then(
+      (t) => t.LessonsModule,
+    ),
   },
   {
     path: 'about',
-    component: AboutComponent
+    loadChildren: () =>
+      import('@app/modules/about/about.module').then(
+        (t) => t.AboutModule,
+      ),
   },
   {
     path: 'courses/:courseId',
-    component: CourseComponent
+    loadChildren: () =>
+    import('@app/modules/courses/courses.module').then(
+      (t) => t.CoursesModule,
+    ),
   },
   {
     path: 'login',
-    component: LoginComponent
+    loadChildren: () =>
+    import('@app/modules/login/login.module').then(
+      (t) => t.LoginModule,
+    ),
   },
   {
     path: '**',

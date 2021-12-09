@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, pluck, shareReplay } from 'rxjs';
 
-import { Course, Lesson, sortCoursesBySeqNo } from 'src/app/shared/models';
-import { CoreModule } from '../core.module';
+import { CoreModule } from '@app/core/core.module';
+import { Course, Lesson, sortCoursesBySeqNo } from '@app/shared/models';
 
 @Injectable({
   providedIn: CoreModule,
